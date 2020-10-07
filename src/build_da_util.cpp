@@ -11,8 +11,10 @@ using namespace DALM;
 namespace {
 
 #ifdef DALM_NEW_XCHECK
-inline uint64_t validate_word_from(const uint64_t* validate, size_t array_size, size_t pos) {
+inline uint64_t validate_word_from(const uint64_t* validate, size_t array_size, size_t pos, uint64_t* mem_access_counts = nullptr) {
     auto validate_at = [&](size_t index) -> uint64_t {
+        if (mem_access_counts)
+            (*mem_access_counts)++;
         return index*64 < array_size ? validate[index] : 0ull;
     };
     auto index = pos/64;
@@ -29,7 +31,7 @@ inline uint64_t validate_word_from(const uint64_t* validate, size_t array_size, 
 
 #ifndef DALM_NEW_XCHECK
 
-int build_da_util::find_base(const DAPair* da_array, long array_size, const VocabId* children, size_t n_children, int initial_base, const uint64_t* validate, uint64_t words_prefix, size_t prefix_length, size_t& skip_counts, size_t& loop_counts) {
+int build_da_util::find_base(const DAPair* da_array, long array_size, const VocabId* children, size_t n_children, int initial_base, const uint64_t* validate, uint64_t words_prefix, size_t prefix_length, uint64_t& skip_counts, uint64_t& loop_counts, uint64_t& mem_access_counts) {
     auto base = initial_base;
     while (base + children[0] < array_size) {
         skip_counts++;
@@ -80,7 +82,7 @@ int build_da_util::find_base(
     const DAPair* da_array,
 #endif
     long array_size, const VocabId* children, size_t n_children, int initial_base,
-    const uint64_t* validate, size_t& skip_counts, size_t& loop_counts) {
+    const uint64_t* validate, uint64_t& skip_counts, uint64_t& loop_counts, uint64_t& mem_access_counts) {
     auto validate_at = [&](size_t index) -> uint64_t {
       return index*64 < array_size ? validate[index] : 0ull;
     };

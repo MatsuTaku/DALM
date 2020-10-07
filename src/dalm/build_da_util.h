@@ -20,7 +20,7 @@ int find_base(
 #ifndef DALM_NEW_XCHECK
     uint64_t words_prefix, size_t prefix_length,
 #endif
-    size_t& skip_counts, size_t& loop_counts);
+    uint64_t& skip_counts, uint64_t& loop_counts, uint64_t& mem_access_counts);
 
 }
 
