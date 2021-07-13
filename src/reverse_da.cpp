@@ -791,14 +791,10 @@ void ReverseDA::det_base(VocabId *children, float node_prob, Base node_bow, std:
             base -= da_array_[base + children[0]].check.check_val;
         }
         base = build_da_util::find_base(
-#ifdef FIND_BASE_ACCESS_DA
             da_array_,
-#endif
             array_size_, children, n_children, base, validate,
-#ifndef DALM_NEW_XCHECK
             words_prefix, prefix_length,
-#endif
-            skip_counts_, loop_counts_);
+            skip_counts_, loop_counts_, mem_access_counts_);
     }
     children_fb_time_table_[n_children] += sw.milli_sec();
 

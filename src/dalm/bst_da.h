@@ -123,6 +123,7 @@ namespace DALM {
         // Member from MatsuTaku
         size_t loop_counts_=0;
         size_t skip_counts_=0;
+        size_t mem_access_counts_=0;
 #ifdef DALM_NEW_XCHECK
         // Additional bit array
         BitVector<1> empty_element_bits;

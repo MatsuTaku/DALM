@@ -1,0 +1,8 @@
+dataset
+product/
+pbin/
+bin/
+nbin/
+n1bin/
+ncnvbin/
+*.out

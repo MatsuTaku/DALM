@@ -829,14 +829,10 @@ void BstDA::det_base(VocabId *words, DAPair *children, std::size_t n_children, f
             base -= da_array_[base + words[0]].check.check_val;
         }
         base = build_da_util::find_base(
-#ifdef FIND_BASE_ACCESS_DA
             da_array_,
-#endif
             array_size_, words, n_children, base, validate,
-#ifndef DALM_NEW_XCHECK
             words_prefix, prefix_length,
-#endif
-            skip_counts_, loop_counts_);
+            skip_counts_, loop_counts_, mem_access_counts_);
     }
     children_fb_time_table_[n_children] += sw.milli_sec();
 

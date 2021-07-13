@@ -15,18 +15,29 @@ add_subdirectory(tests/gtest)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_definitions(-DDALM_MAX_ORDER=6)
-# Definitions from MatsuTaku
+
+### Definitions by MatsuTaku
+option(DALM_PLAIN_XCHECK "Enable plain XCHECK algorithm." OFF)
 option(DALM_NEW_XCHECK "Enable new XCHECK algorithm." ON)
-option(DALM_EL_SKIP "Enable EL skipping with new XCHECK algorithm." OFF)
+option(DALM_EL_SKIP "Enable EL skipping with new XCHECK algorithm." ON)
+option(DALM_CNV_XCHECK "Enable convolution XCHECK algorithm." OFF)
+if (DALM_PLAIN_XCHECK)
+    add_definitions(-DDALM_PLAIN_XCHECK)
+endif()
 if (DALM_NEW_XCHECK)
     add_definitions(-DDALM_NEW_XCHECK)
 endif()
 if (DALM_EL_SKIP)
     add_definitions(-DDALM_EL_SKIP)
 endif()
+if (DALM_CNV_XCHECK)
+    add_definitions(-DDALM_CNV_XCHECK)
+endif()
+message(STATUS "DALM_PLAIN_XCHECK is " ${DALM_PLAIN_XCHECK})
 message(STATUS "DALM_NEW_XCHECK is " ${DALM_NEW_XCHECK})
 message(STATUS "DALM_EL_SKIP is " ${DALM_EL_SKIP})
-# end definitions
+message(STATUS "DALM_CNV_XCHECK is " ${DALM_CNV_XCHECK})
+### end definitions
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -69,7 +80,9 @@ set(HEADERS
     src/dalm/vocabulary_file.h
     src/dalm/fileutil.h
     src/dalm/sortutil.h
+    src/dalm/bit_util.h
     src/dalm/build_da_util.h
+    src/dalm/convolution.h
     )
 
 set(SOURCE_FILES
@@ -139,6 +152,12 @@ target_link_libraries(
     pthread
     gtest
     gtest_main
+)
+add_executable(convolution_test
+    tests/index_sum_convolution_test.cpp
+)
+add_executable(convolution_find_base
+    tests/convolution_find_base_test.cpp
 )
 
 if(WITH_PYTHON)

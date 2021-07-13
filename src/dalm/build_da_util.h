@@ -1,10 +1,6 @@
 #ifndef DALM_BUILD_DA_UTIL_H_
 #define DALM_BUILD_DA_UTIL_H_
 
-#if !defined(DALM_NEW_XCHECK) || defined(DALM_EL_SKIP)
-#define FIND_BASE_ACCESS_DA
-#endif
-
 #include <cstddef>
 #include <cstdint>
 #include "da.h"
@@ -13,14 +9,26 @@
 namespace DALM::build_da_util {
 
 int find_base(
-#ifdef FIND_BASE_ACCESS_DA
-    const DAPair* da_array,
-#endif
-    long array_size, const VocabId* children, size_t n_children, int initial_base, const uint64_t* validate,
-#ifndef DALM_NEW_XCHECK
-    uint64_t words_prefix, size_t prefix_length,
-#endif
-    uint64_t& skip_counts, uint64_t& loop_counts, uint64_t& mem_access_counts);
+        const DAPair* da_array,
+        long array_size, const VocabId* children, size_t n_children, int initial_base, const uint64_t* validate,
+        uint64_t words_prefix, size_t prefix_length,
+        size_t& skip_counts, size_t& loop_counts, size_t& mem_access_counts);
+
+int find_base_brute_force (
+        const DAPair* da_array,
+        long array_size, const VocabId* children, size_t n_children, int initial_base, const uint64_t* validate,
+        uint64_t words_prefix, size_t prefix_length,
+        size_t& skip_counts, size_t& loop_counts, size_t& mem_access_counts);
+
+int find_base_bit_parallel (
+        const DAPair* da_array,
+        long array_size, const VocabId* children, size_t n_children, int initial_base, const uint64_t* validate,
+        size_t& skip_counts, size_t& loop_counts, size_t& mem_access_counts);
+
+int find_base_convolution (
+        const DAPair* da_array,
+        long array_size, const VocabId* children, size_t n_children, int initial_base, const uint64_t* validate,
+        size_t& skip_counts, size_t& loop_counts, size_t& mem_access_counts);
 
 }
 

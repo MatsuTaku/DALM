@@ -123,6 +123,7 @@ namespace DALM {
         // Member from MatsuTaku
         size_t loop_counts_=0;
         size_t skip_counts_=0;
+        size_t mem_access_counts_=0;
         std::map<size_t, size_t> children_cnt_table_;
         std::map<size_t, double> children_fb_time_table_;
     };
