@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <algorithm>
+#include <limits>
 
 #include "dalm/bit_util.h"
 #include "dalm/convolution.h"
@@ -131,7 +132,10 @@ int build_da_util::find_base_bit_parallel(
     size_t& skip_counts, size_t& loop_counts, size_t& mem_access_counts) {
 
     auto base = initial_base;
-    while (base + children[0] < array_size) {
+    while (base < array_size - children[0]) {
+        if (base > std::numeric_limits<int>::max() - children[n_children-1]) {
+            throw std::overflow_error("Overflow array size with 31 bits pointer.");
+        }
         skip_counts++;
 
         uint64_t base_mask = 0;
